@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tactic — Tic-Tac-Toe</title>
+  <meta name="description" content="A crisp, zero-dependency tic-tac-toe with an unbeatable AI mode." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Tactic</h1>
+      <p class="subtitle">Tic-tac-toe, done right.</p>
+    </header>
+
+    <section class="controls" aria-label="Game mode">
+      <div class="mode-toggle" role="group" aria-label="Choose game mode">
+        <button id="mode-2p" class="mode-btn active" type="button">2 Players</button>
+        <button id="mode-cpu" class="mode-btn" type="button">vs Computer</button>
+      </div>
+    </section>
+
+    <p id="status" class="status" aria-live="polite">X's turn</p>
+
+    <div id="board" class="board" role="grid" aria-label="Tic-tac-toe board"></div>
+
+    <section class="scoreboard" aria-label="Scoreboard">
+      <div class="score"><span class="score-label">X</span><span id="score-x">0</span></div>
+      <div class="score"><span class="score-label">Draws</span><span id="score-d">0</span></div>
+      <div class="score"><span class="score-label">O</span><span id="score-o">0</span></div>
+    </section>
+
+    <div class="actions">
+      <button id="new-game" type="button">New Game</button>
+      <button id="reset-scores" type="button" class="ghost">Reset Scores</button>
+    </div>
+
+    <footer>
+      <a href="https://github.com/layerx-labs/arena-tic-tac-toe-fable" target="_blank" rel="noopener">Source on GitHub</a>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
