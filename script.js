@@ -28,6 +28,46 @@ function isDraw(board) {
   return !checkWinner(board) && board.every((cell) => cell !== null);
 }
 
+// ---------- Minimax AI (used in vs-Computer mode; computer plays O) ----------
+
+/**
+ * Scores a finished-or-ongoing board from O's perspective.
+ * Depth is used so the AI prefers faster wins and slower losses.
+ */
+function minimax(board, isMaximizing, depth) {
+  const result = checkWinner(board);
+  if (result) return result.winner === "O" ? 10 - depth : depth - 10;
+  if (board.every((c) => c !== null)) return 0;
+
+  const player = isMaximizing ? "O" : "X";
+  let best = isMaximizing ? -Infinity : Infinity;
+  for (let i = 0; i < 9; i++) {
+    if (board[i] !== null) continue;
+    board[i] = player;
+    const score = minimax(board, !isMaximizing, depth + 1);
+    board[i] = null;
+    best = isMaximizing ? Math.max(best, score) : Math.min(best, score);
+  }
+  return best;
+}
+
+/** Best move index for O on the given board. */
+function bestMove(board) {
+  let move = -1;
+  let bestScore = -Infinity;
+  for (let i = 0; i < 9; i++) {
+    if (board[i] !== null) continue;
+    board[i] = "O";
+    const score = minimax(board, false, 0);
+    board[i] = null;
+    if (score > bestScore) {
+      bestScore = score;
+      move = i;
+    }
+  }
+  return move;
+}
+
 // ---------- State ----------
 
 const state = {
@@ -117,6 +157,17 @@ function handleCellClick(index) {
   applyMove(index);
   render();
 
+  if (state.mode === "cpu" && !state.gameOver && state.currentPlayer === "O") {
+    state.cpuThinking = true;
+    render();
+    // Small delay so the computer's reply reads as a move, not a glitch.
+    setTimeout(() => {
+      const move = bestMove(state.board);
+      state.cpuThinking = false;
+      if (move !== -1) applyMove(move);
+      render();
+    }, 300);
+  }
 }
 
 function newGame() {
@@ -145,4 +196,4 @@ modeCpuBtn.addEventListener("click", () => setMode("cpu"));
 render();
 
 // Expose pure functions for quick console testing (harmless in production).
-window.__tactic = { checkWinner, isDraw };
+window.__tactic = { checkWinner, isDraw, bestMove };
