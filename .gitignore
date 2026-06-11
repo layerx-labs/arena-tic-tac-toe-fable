@@ -1,2 +1,6 @@
 .vercel
 .arena/
+.arena/
+node_modules/
+dist/
+.vercel/
